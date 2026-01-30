@@ -1,0 +1,2 @@
+# one video per line, relative to data/raw
+# example: cam1/scene_001.mp4

@@ -1,1 +1,4 @@
 # one video per line, relative to data/raw
+
+vid6.mp4
+vid7.mp4

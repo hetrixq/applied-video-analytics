@@ -1,81 +1,64 @@
-# Система обнаружения движения в видеопотоке
+# Motion Detection System in Video Streams
 
-Данный проект посвящён разработке и анализу системы обнаружения движения
-в видеопотоке в рамках курса *«Прикладной анализ видеоаналитики»*.
+This project is dedicated to the development and analysis of a motion detection system in video streams as part of the course *“Applied Video Analytics”*.
 
-Проект рассматривает задачу обнаружения движения как **инженерную систему**, 
-включающую формализацию требований, воспроизводимый экспериментальный протокол
-и анализ поведения базового решения.
+The project treats motion detection as an **engineering system**, including requirement formalization, a reproducible experimental protocol and analysis of baseline system behavior.
 
-## Структура проекта
+## Project Structure
 
 ```sh
 .
-├── PROJECT_PASSPORT.md # Формализация задачи и требований (Часть A)
-├── README.md # Общее описание проекта (данный файл)
+├── PROJECT_PASSPORT.md     # Task and system requirements formalization
+├── README.md               # General project description (this file)
 │
 ├── configs/
-│ └── baseline.yaml.template # Шаблон конфигурации baseline-эксперимента
+│ └── baseline.yaml         # Baseline experiment configuration
 │
 ├── data/
-│ └── annotations.csv # Разметка интервалов движения
+│ └── annotations.csv       # Motion interval annotations
 │
 ├── splits/
-│ ├── train.txt     # Train-разбиение (по видео)
-│ ├── val.txt       # Validation-разбиение
-│ └── test.txt      # Test-разбиение
+│ ├── train.txt             # Training split (by video)
+│ ├── val.txt               # Validation split
+│ └── test.txt              # Test split
 │
 ├── src/
-│ └── baseline/     # Реализация baseline-пайплайна (Часть C)
-│ ├── README.md     # Подробное описание логики baseline
-│ ├── baseline.py
-│ ├── data.py
-│ ├── model.py
-│ └── utils.py
+│ └── baseline/             # Baseline pipeline implementation
+│     ├── __init__.py
+│     ├── baseline.py
+│     ├── data.py
+│     ├── model.py
+│     ├── utils.py
+│     ├── visualize.py
+│     └── README.md         # Detailed baseline logic description
 │
-├── runs/ # Результаты запусков baseline (будут добавлены)
-└── reports/ # Аналитические отчёты (Часть D)
+├── runs/                   # Baseline run results (generated after execution)
+└── reports/                # Analytical reports
+````
 
-```
+## Task Formalization
 
----
+A detailed description of the application task, usage context, input and output data, as well as system constraints is provided in **[`PROJECT_PASSPORT.md`](PROJECT_PASSPORT.md)**.
 
-## Формализация задачи
+## Baseline Solution
 
-Описание прикладной задачи, контекста применения, входных и выходных данных, 
-а также ограничений системы приведено в документе:
+As part of the project, a **reproducible baseline pipeline** for motion detection has been implemented, including:
+* a fixed experimental protocol, 
+* a simple standard model,
+* training and evaluation procedures,
+* storage of experiment artifacts.
 
-**`PROJECT_PASSPORT.md`**
+The baseline implementation is located in **[`src/baseline/`](src/baseline/)**.
 
-## Baseline-решение
+A detailed description of the baseline logic, experimental protocol, and
+saved artifacts is provided in **[`src/baseline/README.md`](src/baseline/README.md)**.
+Detailed run instructions are also available there.
 
-В рамках проекта реализован **воспроизводимый baseline-пайплайн**
-для задачи обнаружения движения, включающий:
-* фиксированный экспериментальный протокол; 
-* простую стандартную модель; 
-* процедуру обучения и оценки; 
-* сохранение артефактов эксперимента.
+## Experimental Results
 
-Реализация baseline расположена в папке:
+Results of each baseline run are stored in the `runs/` directory and include the experiment configuration, model parameters, evaluation metrics and prediction outputs.
 
-**`src/baseline/`**
+## Analysis
 
-Подробное описание логики работы baseline, экспериментального протокола
-и сохраняемых результатов приведено в документе:
-
-**`src/baseline/README.md`**
-
-## Результаты экспериментов
-
-Результаты каждого запуска baseline сохраняются в папке `runs/`
-
-и включают конфигурацию эксперимента, параметры модели, 
-метрики качества и предсказания.
-
-## Анализ
-
-Инженерный анализ поведения baseline-решения, 
-его ограничений и характерных ошибок приводится в папке:
-
-**`reports/`**
-```
+An engineering analysis of the baseline behavior, its limitations, and
+characteristic error patterns is provided in **[`reports/`](reports/)**.

@@ -1,2 +1,8 @@
 # one video per line, relative to data/raw
 # example: cam1/scene_001.mp4
+
+vid0.mp4
+vid1.mp4
+vid8.mp4
+vid4.mp4
+vid5.mp4

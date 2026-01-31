@@ -1,45 +1,52 @@
 # Motion Detection Baseline
 
-Сквозной baseline-пайплайн для задачи **обнаружения движения** в видеопотоке.  
-Формулировка: **бинарная классификация по временным окнам** ( `motion` / `no_motion` ).
+End-to-end baseline pipeline for **motion detection** in video streams.  
+Problem formulation: **binary classification over temporal windows** ( `motion` / `no_motion` ).
 
-## Что входит в пайплайн
+## At a Glance
 
-* загрузка видео из `data/raw/` по спискам `splits/*.txt`
-* фиксированный экспериментальный протокол: разбиение по **видео**, а не по кадрам
-* простая стандартная модель: **классификатор по порогу** для `motion_score`
-* процедура обучения: подбор порога на train (grid search)
-* процедура оценки: accuracy/precision/recall/f1 (+ TP/TN/FP/FN)
-* сохранение результатов в `runs/<run_name>/`
+* **Input**: videos in `data/raw/` + temporal annotations in `data/annotations.csv`
+* **Split**: fixed lists in `splits/*.txt` (split by **videos**, not frames)
+* **Model**: threshold-based classifier on `motion_score`
+* **Training**: grid search for the best threshold on the training set
+* **Eval**: accuracy / precision / recall / f1 (+ TP / TN / FP / FN)
+* **Outputs**: artifacts saved under `runs/<run_name>/`
 
-## Структура
+## Quickstart
 
-```
-.
-├── configs/baseline.yaml
-├── data/
-│   ├── raw/                 # положить сюда видео
-│   └── annotations/annotations.csv
-├── splits/train.txt
-├── splits/val.txt
-├── splits/test.txt
-├── src/
-│   ├── baseline.py
-│   ├── data.py
-│   ├── model.py
-│   └── utils.py
-└── runs/
-```
+1. Put video files into `data/raw/` (subdirectories are OK).
+2. Fill `splits/train.txt`,  `splits/val.txt`,  `splits/test.txt` with relative paths (one per line).
+3. Create annotations in `data/annotations.csv`.
+4. Install dependencies:
+    ```bash
+    # reproducible (recommended)
+    pip install -r requirements.lock
 
-## Аннотации (разметка)
+    # minimal (for understanding / quick start)
+    pip install -r requirements.txt
+    ```
 
-Файл `data/annotations/annotations.csv` с интервалами движения:
+5. Run:
+    ```bash
+    python -m src.baseline --config configs/baseline.yaml
+    ```
 
-* `video` — путь относительно `data/raw/` (должен совпадать со строками в splits)
-* `t_start_sec` — начало интервала движения (сек)
-* `t_end_sec` — конец интервала движения (сек)
+Artifacts are saved to `runs/<run_name>/` :
 
-Пример:
+* `params.yaml` – configuration used for the run
+* `model.json` – learned threshold value
+* `metrics.json` – metrics on train / val / test splits
+* `predictions.csv` – per-window predictions
+
+## Annotations Format
+
+Temporal motion intervals live in `data/annotations.csv` :
+
+* `video` — path relative to `data/raw/` (must match entries in split files)
+* `t_start_sec` — start time of motion interval (seconds)
+* `t_end_sec` — end time of motion interval (seconds)
+
+Example:
 
 ```csv
 video,t_start_sec,t_end_sec
@@ -47,28 +54,18 @@ cam1/scene_001.mp4,3.2,8.9
 cam1/scene_001.mp4,15.0,16.4
 ```
 
-Если видео целиком без движения — его можно не указывать в CSV (оно будет считаться all-negative).
+If a video contains no motion at all, it can be omitted from the CSV file
+and will be treated as entirely negative ( `no_motion` ).
 
-## Как запустить
+## Reproducibility
 
-1) Добавь видео в `data/raw/` (можно с подпапками).
-2) Заполни `splits/train.txt` , `splits/val.txt` , `splits/test.txt` путями к видео (по одному на строку).
-3) Заполни `data/annotations/annotations.csv` .
-4) Запусти:
+Reproducibility is ensured by:
 
-```bash
-python -m src.baseline --config configs/baseline.yaml
-```
+* fixed split files
+* a fixed configuration (FPS, resize, window size, thresholds, metrics)
+* a fixed `random_seed`
 
-Результаты будут в `runs/<run_name>/` :
-* `params.yaml` — использованный конфиг
-* `model.json` — найденный порог
-* `metrics.json` — метрики train/val/test
-* `predictions.csv` — предикты по каждому окну времени
+## Environment
 
-## Воспроизводимость
-
-Обеспечивается:
-* фиксированными split-файлами
-* фиксированным конфигом (fps/resize/окна/пороги/метрики)
-* фиксированным `random_seed`
+* **Python**: 3.9.x
+* **OS**: macOS Sonoma, Apple Silicon (M2)

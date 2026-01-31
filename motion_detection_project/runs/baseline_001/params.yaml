@@ -1,0 +1,37 @@
+project:
+  name: motion_detection_baseline
+  random_seed: 42
+data:
+  raw_dir: data/raw
+  annotations_csv: data/annotations.csv
+  splits_dir: splits
+  train_split: train.txt
+  val_split: val.txt
+  test_split: test.txt
+preprocess:
+  target_fps: 10
+  resize:
+    width: 320
+    height: 180
+    keep_aspect: true
+  roi_polygon_norm: []
+features:
+  window_sec: 1.0
+  blur_ksize: 5
+  diff_threshold: 15
+  min_motion_frac: 0.002
+model:
+  type: threshold_1d
+  search:
+    metric: f1
+    n_thresholds: 101
+evaluation:
+  metrics:
+  - accuracy
+  - precision
+  - recall
+  - f1
+  label_overlap_frac: 0.2
+output:
+  runs_dir: runs
+  run_name: baseline_001

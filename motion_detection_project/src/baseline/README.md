@@ -20,7 +20,7 @@ Problem formulation: **binary classification over temporal windows** ( `motion` 
 4. Install dependencies:
     
 
-```bash
+    ```bash
     # reproducible (recommended)
     pip install -r requirements.lock
 
@@ -30,8 +30,7 @@ Problem formulation: **binary classification over temporal windows** ( `motion` 
 
 5. Run:
     
-
-```bash
+    ```bash
     python -m src.baseline --config configs/baseline.yaml
     ```
 

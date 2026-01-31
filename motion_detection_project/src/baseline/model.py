@@ -3,6 +3,7 @@ from dataclasses import dataclass
 import numpy as np
 from .utils import compute_metrics
 
+
 @dataclass
 class Threshold1D:
     threshold: float
@@ -10,7 +11,10 @@ class Threshold1D:
     def predict(self, scores: np.ndarray) -> np.ndarray:
         return (scores >= self.threshold).astype(int)
 
-def fit_threshold(scores: np.ndarray, y_true: np.ndarray, n_thresholds: int, metric: str) -> Threshold1D:
+
+def fit_threshold(
+    scores: np.ndarray, y_true: np.ndarray, n_thresholds: int, metric: str
+) -> Threshold1D:
     scores = scores.astype(float)
     y_true = y_true.astype(int)
 

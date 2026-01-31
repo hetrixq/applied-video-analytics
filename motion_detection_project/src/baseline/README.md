@@ -9,16 +9,18 @@ Problem formulation: **binary classification over temporal windows** ( `motion` 
 * **Split**: fixed lists in `splits/*.txt` (split by **videos**, not frames)
 * **Model**: threshold-based classifier on `motion_score`
 * **Training**: grid search for the best threshold on the training set
-* **Eval**: accuracy / precision / recall / f1 (+ TP / TN / FP / FN)
+* **Eval**: accuracy / precision / recall / F1 (+ TP / TN / FP / FN)
 * **Outputs**: artifacts saved under `runs/<run_name>/`
 
 ## Quickstart
 
 1. Put video files into `data/raw/` (subdirectories are OK).
-2. Fill `splits/train.txt`,  `splits/val.txt`,  `splits/test.txt` with relative paths (one per line).
+2. Fill `splits/train.txt`,   `splits/val.txt`,  `splits/test.txt` with relative paths (one per line).
 3. Create annotations in `data/annotations.csv`.
 4. Install dependencies:
-    ```bash
+    
+
+```bash
     # reproducible (recommended)
     pip install -r requirements.lock
 
@@ -27,7 +29,9 @@ Problem formulation: **binary classification over temporal windows** ( `motion` 
     ```
 
 5. Run:
-    ```bash
+    
+
+```bash
     python -m src.baseline --config configs/baseline.yaml
     ```
 

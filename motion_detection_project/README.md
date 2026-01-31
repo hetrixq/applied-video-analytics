@@ -56,9 +56,9 @@ Detailed run instructions are also available there.
 
 ## Experimental Results
 
-Results of each baseline run are stored in the `runs/` directory and include the experiment configuration, model parameters, evaluation metrics and prediction outputs.
+Results of each baseline run are stored in the **[`runs/`](runs/)** directory and include the experiment configuration, model parameters, evaluation metrics and prediction outputs.
 
 ## Analysis
 
-An engineering analysis of the baseline behavior, its limitations, and
+An engineering analysis of the baseline behavior, its limitations and
 characteristic error patterns is provided in **[`reports/`](reports/)**.

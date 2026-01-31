@@ -8,6 +8,7 @@ import cv2
 
 from .utils import overlap_fraction
 
+
 def load_annotations(csv_path: str) -> Dict[str, List[Tuple[float, float]]]:
     if not os.path.exists(csv_path):
         return {}
@@ -15,10 +16,15 @@ def load_annotations(csv_path: str) -> Dict[str, List[Tuple[float, float]]]:
     ann: Dict[str, List[Tuple[float, float]]] = {}
     for _, r in df.iterrows():
         video = str(r["video"])
-        ann.setdefault(video, []).append((float(r["t_start_sec"]), float(r["t_end_sec"])))
+        ann.setdefault(video, []).append(
+            (float(r["t_start_sec"]), float(r["t_end_sec"]))
+        )
     return ann
 
-def resize_with_aspect(img: np.ndarray, width: int, height: int, keep_aspect: bool) -> np.ndarray:
+
+def resize_with_aspect(
+    img: np.ndarray, width: int, height: int, keep_aspect: bool
+) -> np.ndarray:
     if not keep_aspect:
         return cv2.resize(img, (width, height), interpolation=cv2.INTER_AREA)
     h, w = img.shape[:2]
@@ -28,18 +34,24 @@ def resize_with_aspect(img: np.ndarray, width: int, height: int, keep_aspect: bo
     canvas = np.zeros((height, width, 3), dtype=resized.dtype)
     x0 = (width - nw) // 2
     y0 = (height - nh) // 2
-    canvas[y0:y0+nh, x0:x0+nw] = resized
+    canvas[y0 : y0 + nh, x0 : x0 + nw] = resized
     return canvas
+
 
 def roi_mask(h: int, w: int, roi_polygon_norm: List[List[float]]) -> np.ndarray:
     if not roi_polygon_norm:
         return np.ones((h, w), dtype=np.uint8)
-    pts = np.array([[int(x*w), int(y*h)] for x, y in roi_polygon_norm], dtype=np.int32)
+    pts = np.array(
+        [[int(x * w), int(y * h)] for x, y in roi_polygon_norm], dtype=np.int32
+    )
     mask = np.zeros((h, w), dtype=np.uint8)
     cv2.fillPoly(mask, [pts], 1)
     return mask
 
-def extract_motion_scores(video_path: str, cfg: Dict[str, Any]) -> Tuple[np.ndarray, List[Tuple[float, float]]]:
+
+def extract_motion_scores(
+    video_path: str, cfg: Dict[str, Any]
+) -> Tuple[np.ndarray, List[Tuple[float, float]]]:
     """Return motion_score per time window and corresponding (t0,t1) windows."""
     cap = cv2.VideoCapture(video_path)
     if not cap.isOpened():
@@ -94,7 +106,7 @@ def extract_motion_scores(video_path: str, cfg: Dict[str, Any]) -> Tuple[np.ndar
 
         diff = cv2.absdiff(g, prev_g)
         _, binm = cv2.threshold(diff, diff_thr, 1, cv2.THRESH_BINARY)
-        binm = (binm.astype(np.uint8) * mask)
+        binm = binm.astype(np.uint8) * mask
         frac = float(np.sum(binm)) / max(1.0, total)
 
         sampled_t.append(float(t_sec))
@@ -125,9 +137,13 @@ def extract_motion_scores(video_path: str, cfg: Dict[str, Any]) -> Tuple[np.ndar
 
     return np.array(scores, dtype=float), windows
 
-def label_windows(video_rel: str, windows: List[Tuple[float, float]],
-                  annotations: Dict[str, List[Tuple[float, float]]],
-                  overlap_thr: float) -> np.ndarray:
+
+def label_windows(
+    video_rel: str,
+    windows: List[Tuple[float, float]],
+    annotations: Dict[str, List[Tuple[float, float]]],
+    overlap_thr: float,
+) -> np.ndarray:
     ints = annotations.get(video_rel, [])
     y = []
     for w0, w1 in windows:

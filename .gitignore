@@ -60,7 +60,6 @@ coverage.xml
 # Data, logs, outputs
 *.log
 *.out
-*.csv
 *.tsv
 *.dat
 *.db
@@ -77,6 +76,7 @@ coverage.xml
 *.npz
 outputs/
 logs/
+motion_detection_project/runs/baseline_001/predictions.csv
 
 # Ignore configs with secrets or local overrides
 *.local.yaml
